@@ -156,9 +156,15 @@ def perform_login(request, user, email_verification,
             return adapter.respond_email_verification_sent(
                 request, user)
     try:
-        adapter.login(request, user)
-        response = HttpResponseRedirect(
-            get_login_redirect_url(request, redirect_url))
+        if global_settings.OAUTH2_PROVIDER_ENABLED:
+            from ..oauth2_provider.token import get_access_token
+
+            response = get_access_token(user)
+        else:
+            adapter.login(request, user)
+            response = HttpResponseRedirect(
+                get_login_redirect_url(request, redirect_url)
+            )
 
         if signal_kwargs is None:
             signal_kwargs = {}
