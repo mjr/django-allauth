@@ -23,6 +23,7 @@ from ..utils import (
 from . import app_settings, signals
 from .adapter import get_adapter
 from .app_settings import EmailVerificationMethod
+from .. import app_settings as global_settings
 
 
 def _unicode_ci_compare(s1, s2):
